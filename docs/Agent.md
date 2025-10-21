@@ -29,7 +29,6 @@
 | 빌드         | Gradle 8.10+, GitHub Actions CI                        |
 | 컨테이너     | Dockerfile(api/web), docker-compose.yml 포함           |
 
-> 참고: `javax.*` → `jakarta.*` 네임스페이스 변경
 
 ---
 
