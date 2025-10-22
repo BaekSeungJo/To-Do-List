@@ -1,0 +1,110 @@
+# codex.config.yaml
+# Codex 실행 및 프로젝트 자동 생성을 위한 설정 파일
+# docs/PRD.md : 요구사항 / docs/Agent.md : 구현 명세
+
+project:
+  name: firebase-todo-service
+  version: 1.3
+  description: >
+    Firebase 인증 기반 개인용 To-Do 관리 서비스 (Java 21 + Spring Boot 3.3 + Next.js 14)
+  repository: https://github.com/example/firebase-todo-service
+  maintainers:
+    - name: 백승조
+      email: sjbaek@kyobobook.com
+
+context:
+  prd: docs/PRD.md
+  agent: docs/Agent.md
+
+runtime:
+  backend:
+    language: java
+    framework: spring-boot
+    version: 3.3.3
+    build_tool: gradle
+    architecture: hexagonal
+    pattern: ddd
+    entrypoint: api/src/main/java/com/example/todo/TodoApplication.java
+    output_dir: api
+  frontend:
+    language: typescript
+    framework: nextjs
+    version: 14
+    entrypoint: web/src/app/page.tsx
+    output_dir: web
+
+tasks:
+  INIT-REPO:
+    description: >
+      초기 프로젝트 스캐폴딩 (백엔드 + 프론트엔드 + Docker 환경)
+    context: docs/PRD.md
+    agent: docs/Agent.md
+    commands:
+      - codex run --context docs/PRD.md --agent docs/Agent.md --task INIT-REPO
+
+  API-TODO:
+    description: >
+      To-Do API 구현 (Hexagonal + DDD 구조)
+    depends_on: [INIT-REPO]
+    commands:
+      - codex run --context docs/PRD.md --agent docs/Agent.md --task API-TODO
+
+  UI-TODO:
+    description: >
+      React / Next.js 기반 To-Do 화면 및 Firebase 로그인 UI 구현
+    depends_on: [INIT-REPO]
+    commands:
+      - codex run --context docs/PRD.md --agent docs/Agent.md --task UI-TODO
+
+  CI:
+    description: >
+      GitHub Actions 빌드/테스트 워크플로우 생성
+    depends_on: [API-TODO, UI-TODO]
+    commands:
+      - codex run --context docs/PRD.md --agent docs/Agent.md --task CI
+
+defaults:
+  language: java
+  framework: spring-boot
+  output_dir: api
+  format: utf-8
+
+execution:
+  auto_commit: true
+  auto_push: false
+  branch: feature/codex-generated
+  include:
+    - "api/"
+    - "web/"
+    - "docs/"
+    - "infra/"
+  exclude:
+    - "node_modules/"
+    - "build/"
+    - ".gradle/"
+    - ".next/"
+
+env:
+  JAVA_HOME: /usr/lib/jvm/java-21-openjdk
+  NODE_VERSION: 20
+  GRADLE_OPTS: "-Xmx2G -XX:+UseG1GC"
+
+ci:
+  provider: github
+  workflow_path: .github/workflows/codex-ci.yml
+  trigger:
+    - push
+    - pull_request
+  jobs:
+    build:
+      steps:
+        - run: ./gradlew clean build
+        - run: npm run build --prefix web
+    test:
+      steps:
+        - run: ./gradlew test
+        - run: npm run test --prefix web
+
+metadata:
+  last_updated: 2025-10-22
+  codex_version: 1.0
