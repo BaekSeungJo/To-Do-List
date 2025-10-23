@@ -1,0 +1,28 @@
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Node
+web/node_modules/
+web/.next/
+web/out/
+
+# Gradle/Java
+api/.gradle/
+api/build/
+
+# Docker
+infra/.env*
+.env*
+!web/.env.example
+!api/.env.example
+
+# Playwright
+web/playwright-report/
+web/test-results/
