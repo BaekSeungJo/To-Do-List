@@ -1,0 +1,26 @@
+# Java
+/build/
+/.gradle/
+api/build/
+api/.gradle/
+api/gradle/
+api/gradlew
+api/gradlew.bat
+
+# Node
+node_modules/
+web/node_modules/
+.next/
+.env*
+
+# IDE
+.idea/
+.vscode/
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Others
+tmp/
