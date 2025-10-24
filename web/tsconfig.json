@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
@@ -14,8 +18,25 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["node", "@types/react", "@types/react-dom", "@playwright/test"]
+    "types": [
+      "node",
+      "@types/react",
+      "@types/react-dom",
+      "@playwright/test"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "src/**/*", "playwright.config.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "src/**/*",
+    "playwright.config.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
